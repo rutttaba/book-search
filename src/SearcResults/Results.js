@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './Results.css';
 import Result from './Result';
 
 function Results(props){
 
-    
+    const books = props.books.forEach(book => 
+        <Result bookData={book} />
+    );
 
         return(
-            <div className="results">
-                {/* props.books. */}
-                <Result/>
+            <div className="booksearch__results">
+               {books}
             </div>
         )
     
@@ -17,14 +18,3 @@ function Results(props){
 
 export default Results;
 
-// export default function Messages(props) {
-//     const badge = props.unread
-//         ? <div className="unread_count">{props.unread}</div> //if no unread messages, don't show the badge
-//         : null;
-//     return (
-//         <div className="messages">
-//             {props.name}
-//             {badge}
-//         </div>
-//     );
-// }
