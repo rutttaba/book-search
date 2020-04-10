@@ -4,15 +4,15 @@ import Results from './SearcResults/Results';
 import SearchForm from './SearchForm/SearchForm';
 import Filters from './Filters/Filters';
 
-class App extends Component() {
+class App extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
       books: [],
       searchTerms: '',
-      printType: 'All',
-      filter: 'All',
+      printType: 'all',
+      filter: '',
       searchButton: false,
       error: null
     }
@@ -34,15 +34,23 @@ class App extends Component() {
       printType: selected
     })
 
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-
-  handleSubmit = (e) => {
-    e.preventDefault();
+  searchParameters() {
+    const { filter, printType, searchTerms } = this.state;
     const key = 'AIzaSyDMnnEQLKagT3_kVhlPy4CO8hs8 - CTbArs';
-    const searchTerm = this.state.searchTerms.trim().split(' ').join('+');
-    const url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&printType=${this.state.printType}&filter=${this.state.filter}&key=${key}`;
+    const searchTerm = searchTerms.trim().split(' ').join('+');
+    
+    if (filter === '') {
+      return `${searchTerm}&printType=${printType}&key=${key}`;
+    } else {
+      return `${searchTerm}&printType=${printType}&filter=${filter}&key=${key}`;
+    }
+  }
+  
+
+  searchBooks() {
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${this.searchParameters()}`;
     fetch(url)
       .then(response => {
         this.setState({
@@ -55,20 +63,20 @@ class App extends Component() {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data);
-        const result = Object.keys(data)
-        .map(key => data[key].items.volumeInfo);
+        console.log(data)
+        const result = data.items.map(book => book);
         this.setState({
           books: result,
           error: null
         })
       })
       .catch(err => {
+        console.log(err)
         this.setState({
           error: err.message
         })
       })
-      .finally(
+      .finally(() => 
         this.setState({
           searchButton: false
         })
@@ -90,7 +98,7 @@ class App extends Component() {
           disabled={this.state.searchButton}  
           searchWord={this.state.searchTerms}
           changeSearchWord={(input)=> this.setSearchTerms(input)}
-          handleSubmit={(e) => this.handleSubmit(e)} />
+          handleSubmit={() => this.searchBooks()} />
         <Filters 
           printType={this.state.printType} 
           filter={this.state.filter} 

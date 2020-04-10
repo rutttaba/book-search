@@ -1,5 +1,15 @@
 .filters {
     background-color: rgb(152, 151, 151);
     display: inline-block;
+    width: 100%;
+    height: 20px;
+    font-size: 1em;
+    padding: 10px;
+}
+
+select {
+    margin-left: 5px;
+    margin-right: 5px;
+   
 }
 

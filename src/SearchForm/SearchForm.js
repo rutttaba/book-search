@@ -2,11 +2,14 @@ import React from 'react';
 import './SearchForm.css';
 
 function SearchForm(props) {
-
+    function handleSubmit(e) {
+        e.preventDefault();
+        props.handleSubmit(e)
+    }
 
         return(
             <div className="searchform">
-                <form className="searchform__form" onSubmit={e => props.handleSubmit(e)}>
+                <form className="searchform__form" onSubmit={handleSubmit}>
                     <label htmlFor="search" className="searchform__search">Search:</label>
                     <input 
                         type="text" 

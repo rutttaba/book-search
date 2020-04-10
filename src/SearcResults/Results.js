@@ -4,8 +4,8 @@ import Result from './Result';
 
 function Results(props){
 
-    const books = props.books.forEach(book => 
-        <Result bookData={book} />
+    const books = props.books.map(book => 
+        <Result key={book.etag} bookData={book} />
     );
 
         return(
